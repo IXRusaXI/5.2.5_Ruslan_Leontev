@@ -5,30 +5,14 @@ import './style.scss'
 import SkillList from '../../shared/SkillList/SkillList';
 import { useAppDispatch, useAppSelector } from '../../store/typedHooks'
 import { filterActions } from '../../store/slices/filter/filterSlice';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useQueryParams } from '../../tools/params/ParamTool';
-import { useSearchParams } from 'react-router-dom';
 
 export function SkillSettings() {
   const [skillString, setSkillString] = useState('')
   const dispatch = useAppDispatch()
   const skills = useAppSelector(state => state.filter.skills)
   const { updateSkills } = useQueryParams()
-  const [searchParams, setSearchParams] = useSearchParams();
-
-//   useEffect(() => {
-//     const searchString = searchParams.get('searchString')
-//     const city = searchParams.get('city')
-//     const paramSkills = searchParams.get('skills')
-
-//     if ((city || searchString) && !paramSkills?.length) {
-//         dispatch(filterActions.setSkills([]))
-//         updateSkills([])
-//         return
-//     }
-
-//     updateSkills(skills)
-//   }, [])
 
   function addSkill() {
     if (skillString.length === 0) return
