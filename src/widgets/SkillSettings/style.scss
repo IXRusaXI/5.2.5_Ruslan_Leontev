@@ -1,0 +1,14 @@
+.skill-input {
+    .mantine-Input-input {
+        border-color: #0000002a;
+        
+        &::placeholder {
+        color: #0F0F104D;
+        }
+        
+        &:focus {
+        border-color: #0f0f10bd;
+        box-shadow: 0 0 3px 1px gray;
+        }
+    }
+}

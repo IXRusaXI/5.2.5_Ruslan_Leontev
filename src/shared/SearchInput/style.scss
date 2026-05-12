@@ -1,0 +1,16 @@
+.search-input {
+    .mantine-Input-input {
+        background: #F6F6F7 ;
+        border-color: #0F0F104D;
+        
+        &::placeholder {
+        font-weight: 500;
+        color: #0F0F104D;
+        }
+        
+        &:focus {
+        border-color: #0f0f10bd;
+        box-shadow: 0 0 3px 1px gray;
+        }
+    }
+}

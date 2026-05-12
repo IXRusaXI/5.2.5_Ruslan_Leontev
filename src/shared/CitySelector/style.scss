@@ -1,0 +1,38 @@
+.city-selector {
+    .mantine-Select-input {
+        border-color: #0000002d;
+        color: #000000a4;
+        
+        &::placeholder {
+        font-weight: 400;
+        color: #0000004b;
+        }
+
+        &:focus {
+        border-color: #0f0f10bd;
+        box-shadow: 0 0 3px 1px gray;
+        }
+    }
+
+    .mantine-Select-rightSection {
+          fill: #ff4444 !important;
+                  color: #ff4444 !important;
+                  background-color: #ff4444 !important;
+        svg {
+        color: #ff4444 !important; // Цвет иконки
+        width: 16px;
+        height: 16px;
+
+            path {
+                stroke: #ff4444 !important; // Гарантирует смену цвета
+            }
+        }
+
+        // Дополнительно: стили при фокусе
+        &:focus-within {
+            svg {
+                color: #aa0000;
+            }
+        }
+    }
+}
