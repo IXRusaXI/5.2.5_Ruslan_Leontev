@@ -10,12 +10,10 @@ import { useAppDispatch, useAppSelector } from './../../store/typedHooks'
 import { vacanciesActions } from './../../store/slices/vacancies/vacanciesSlice';
 import { pageActions } from './../../store/slices/page/pageSlice';
 import { useQueryParams } from '../../tools/params/ParamTool';
-import { useLoaderData } from 'react-router-dom';
 import ErrorModal from '../../shared/ErrorModal/ErrorModal';
 import { errorActions } from '../../store/slices/error/errorSlice';
 
 function App() {
-
   const { updateSearchString, updateSkills, updateCity } = useQueryParams()
 
   const dispatch = useAppDispatch()
@@ -29,9 +27,6 @@ function App() {
   const skills = useAppSelector(state => state.filter.skills)
   const all = useAppSelector(state => state.vacancy.all)
   const pageLimit = useAppSelector(state => state.page.pageLimit)
-
-
-
 
   useEffect(() => {
     if (!errorIsOpen) return

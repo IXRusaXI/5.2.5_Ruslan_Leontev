@@ -1,4 +1,4 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';// предполагаем, что интерфейс Vacancy лежит в types.ts
+import { createSlice } from '@reduxjs/toolkit';// предполагаем, что интерфейс Vacancy лежит в types.ts
 
 
 // Начальное состояние

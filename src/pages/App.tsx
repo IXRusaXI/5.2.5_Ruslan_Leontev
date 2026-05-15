@@ -1,4 +1,4 @@
-import { Route, Routes, RouterProvider, createBrowserRouter, createRoutesFromElements } from "react-router-dom"
+import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from "react-router-dom"
 import Layout from "./layout/layoutPage"
 import List from "./main/vacancyListPage"
 import VacancyPage from "./vacancy/vacancyPage"

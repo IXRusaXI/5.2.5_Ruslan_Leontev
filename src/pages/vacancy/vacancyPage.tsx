@@ -1,4 +1,4 @@
-import { Navigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Vacancy as VacancyCard } from "../../widgets/Vacancy/Vacancy"
 import { Container, Title, Text } from "@mantine/core";
 import { type Vacancy } from './../types/types'
