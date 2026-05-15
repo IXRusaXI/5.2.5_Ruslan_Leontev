@@ -12,13 +12,12 @@ import { theme } from './theme.ts'
 const base = '/5.2.5_Ruslan_Leontev/';
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <BrowserRouter basename={base}>
+  // <StrictMode>
+    
       <Provider store={store}>
         <MantineProvider theme={theme}>
           <App />
         </MantineProvider>
       </Provider>
-    </BrowserRouter>
-  </StrictMode>,
+  // </StrictMode>,
 )

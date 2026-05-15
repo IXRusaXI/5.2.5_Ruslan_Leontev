@@ -44,26 +44,16 @@ export function useQueryParams() {
         }
 
         if (paramSkills && paramSkills.length > 0) {
-            console.log('Потом Сюда зашли')
-
-
             const mass = paramSkills.split(',')
 
             if (JSON.stringify(mass) !== JSON.stringify(stateSkills)) {
                 dispatch(filterActions.setSkills(mass))
             }
         } else if (stateSkills && stateSkills.length > 0) {
-            console.log('Second Alarm!!!!!!!!!!!')
-            console.log('paramSkills', paramSkills)
-            console.log('paramCity || searchString', paramCity || searchString)
-
             if (paramCity || searchString) {
-                
-
                 dispatch(filterActions.setSkills([]))
                 updateParams('skills', [])
             } else {
-                console.log('Сюда зашли', stateSkills)
                 updateParams('skills', stateSkills)
             }
         }
@@ -108,9 +98,7 @@ export function useQueryParams() {
         } else {
             newParams.delete(paramName);
         }
-        
-        console.log('updateParams searchParams', searchParams)
-        console.log('updateParams setSearchParams', paramName, newParams)
+
         setSearchParams(newParams);
     }
  

@@ -1,0 +1,10 @@
+.mantine-Button-root.close-modal-btn {
+    padding: 0;
+    position: absolute;
+    right: -26px;
+    top: -26px;
+
+    &:hover {
+        box-shadow: 0 0 6px 1px rgba(255, 0, 0, 0.774);
+    }
+}

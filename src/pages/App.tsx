@@ -1,27 +1,25 @@
-import { Route, Routes } from "react-router-dom"
+import { Route, Routes, RouterProvider, createBrowserRouter, createRoutesFromElements } from "react-router-dom"
 import Layout from "./layout/layoutPage"
 import List from "./main/vacancyListPage"
 import VacancyPage from "./vacancy/vacancyPage"
-import { useEffect } from "react"
-import { vacanciesActions } from "../store/slices/vacancies/vacanciesSlice"
-import VacanciesData from "./data/vacancies"
-import { useAppDispatch } from '../store/typedHooks'
+import { vacanciesLoader } from './../tools/loaders/vacanciesLoader'
+import CircleLoader from '../shared/CircleLoader/CircleLoader'
+
+const routes = createRoutesFromElements(
+    <Route path="/" element={<Layout />} loader={vacanciesLoader} hydrateFallbackElement={<CircleLoader />}>
+      <Route path="" element={<List />}/>
+      <Route path="vacancy/:id" element={<VacancyPage />} />
+    </Route>
+)
+
+const router = createBrowserRouter(routes, {
+  basename: '/5.2.5_Ruslan_Leontev/'
+})
 
 function App() {
-  const dispatch = useAppDispatch()
-
-  useEffect(() => {
-    dispatch(vacanciesActions.setAllVacancies(VacanciesData))
-  }, [])
-
   return (
     <>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route path="" element={<List />} />
-          <Route path="vacancy/:id" element={<VacancyPage />} />
-        </Route>
-      </Routes>
+      <RouterProvider router={router}/>
     </>
   )
 }

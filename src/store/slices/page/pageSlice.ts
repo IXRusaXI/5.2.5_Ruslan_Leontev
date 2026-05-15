@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';// предполагаем, что интерфейс Vacancy лежит в types.ts
 import type { Vacancy } from '../../../pages/types/types';
-
+import { vacanciesActions } from '../vacancies/vacanciesSlice';
 
 // Начальное состояние
 interface PaginationState {
@@ -34,7 +34,12 @@ const pageSlice = createSlice({
             action.payload.page * state.pageLimit
         )
     }
-  }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(vacanciesActions.filterVacancies, (state) => {
+      state.activePageNumber = 1;
+    });
+  },
 });
 
 export const pageActions = pageSlice.actions;

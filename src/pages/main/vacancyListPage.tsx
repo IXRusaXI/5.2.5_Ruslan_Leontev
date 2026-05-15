@@ -10,13 +10,17 @@ import { useAppDispatch, useAppSelector } from './../../store/typedHooks'
 import { vacanciesActions } from './../../store/slices/vacancies/vacanciesSlice';
 import { pageActions } from './../../store/slices/page/pageSlice';
 import { useQueryParams } from '../../tools/params/ParamTool';
-
+import { useLoaderData } from 'react-router-dom';
+import ErrorModal from '../../shared/ErrorModal/ErrorModal';
+import { errorActions } from '../../store/slices/error/errorSlice';
 
 function App() {
+
   const { updateSearchString, updateSkills, updateCity } = useQueryParams()
 
   const dispatch = useAppDispatch()
   const city = useAppSelector(state => state.filter.city)
+  const errorIsOpen = useAppSelector(state => state.error.showErrorModal)
   const activePageNumber = useAppSelector(state => state.page.activePageNumber)
   const activePageList = useAppSelector(state => state.page.activePageList)
   const total = useAppSelector(state => state.page.total)
@@ -25,6 +29,18 @@ function App() {
   const skills = useAppSelector(state => state.filter.skills)
   const all = useAppSelector(state => state.vacancy.all)
   const pageLimit = useAppSelector(state => state.page.pageLimit)
+
+
+
+
+  useEffect(() => {
+    if (!errorIsOpen) return
+
+    const timer = setTimeout(() => dispatch(errorActions.hideError()), 6000)
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [errorIsOpen])
 
   useEffect(() => {
     updateSearchString()
@@ -62,6 +78,7 @@ function App() {
   }
 
   return (
+    <>
     <Box bg='background' mih='100vh' pb='xl' >
       <ContentContainer>
         <PageTitle />
@@ -104,6 +121,9 @@ function App() {
         </Group>
       </ContentContainer>
     </ Box>
+
+    {errorIsOpen && <ErrorModal />}
+    </>
   )
 }
 

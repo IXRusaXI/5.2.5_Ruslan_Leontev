@@ -24,14 +24,30 @@ const vacanciesSlice = createSlice({
     filterVacancies: (state, action: PayloadAction<SearchParams>) => {
         state.filtered = state.all.filter((vacancy) => {
             const { skills, searchString, city } = action.payload
+            
+            let skillMatch = false
+            let cityMatch = false
+            let searchMatch = false
 
-            if (skills.length > 0 && !skills.every((skill) => vacancy.snippet?.requirement?.toLowerCase().includes(skill.toLowerCase()))) return false
-            if (searchString.length > 0 && !vacancy.name.toLowerCase().includes(searchString.toLowerCase())) return false
-            if (city.length > 0 && city !== 'Все города') {
-              return vacancy.area.name.toLowerCase().includes(city.toLowerCase())
+            if (skills.length > 0) {
+              skillMatch = skills.every((skill) => vacancy.snippet?.requirement?.toLowerCase().includes(skill.toLowerCase()))
+            } else {
+              skillMatch = true
             }
-              
-            return true
+
+            if (searchString.length > 0) {
+              searchMatch = vacancy.name.toLowerCase().includes(searchString.toLowerCase())
+            } else {
+              searchMatch = true  
+            }
+            
+            if (city !== 'Все города') {
+              cityMatch = vacancy.area.name.toLowerCase().includes(city.toLowerCase())
+            } else if (city === 'Все города') {
+              cityMatch = true
+            }
+            
+            return skillMatch && cityMatch && searchMatch
         })
     },
   }

@@ -23,6 +23,7 @@ export interface Vacancy {
     employer: {
         id: string,
         name: string,
+        employerDescription?: string,
         logo_urls?: {
             '90'?: string,
             '240'?: string,
