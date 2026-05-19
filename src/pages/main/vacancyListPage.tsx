@@ -13,7 +13,7 @@ import { useQueryParams } from '../../tools/params/ParamTool';
 import ErrorModal from '../../shared/ErrorModal/ErrorModal';
 import { errorActions } from '../../store/slices/error/errorSlice';
 
-function App() {
+function VacancyListPage() {
   const { updateSearchString, updateSkills, updateCity } = useQueryParams()
 
   const dispatch = useAppDispatch()
@@ -122,4 +122,4 @@ function App() {
   )
 }
 
-export default App
+export default VacancyListPage

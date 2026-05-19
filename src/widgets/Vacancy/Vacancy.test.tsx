@@ -1,149 +1,244 @@
-// import { describe, it, expect } from 'vitest'
-// import { screen } from '@testing-library/react'
+// src/widgets/Vacancy/Vacancy.test.tsx
+import { describe, it, expect } from 'vitest'
+import { screen } from '@testing-library/react'
+import { BrowserRouter } from 'react-router-dom'
+import { renderWithProviders } from '../../test-utils/render'
+import { Vacancy } from './Vacancy'
+import type { Vacancy as VacancyType } from '../../pages/types/types'
 
-// import { renderWithProviders } from '../../test-utils/render'
-// import { Vacancy } from './Vacancy'
-// import type { Vacancy as VacancyType } from '../../pages/types/types'
+// Helper для рендера компонента с Router
+function renderVacancy(vacancy: VacancyType) {
+  return renderWithProviders(
+    <BrowserRouter>
+      <Vacancy vacancy={vacancy} />
+    </BrowserRouter>
+  )
+}
 
-// describe('Vacancy', () => {
-//   const baseVacancy: VacancyType = {
-//     id: '1',
-//     name: 'Frontend разработчик',
-//     url: 'https://example.com/vacancy/1',
-//     salary: {
-//       from: null,
-//       to: null,
-//       currency: 'RUR',
-//       gross: false,
-//     },
-//     area: {
-//       id: 'spb',
-//       name: 'Санкт-Петербург',
-//     },
-//     experience: {
-//       id: 'exp-3',
-//       name: 'Опыт от 3 лет',
-//     },
-//     schedule: {
-//       id: 'full-day',
-//       name: 'Полный день',
-//     },
-//     employer: {
-//       id: 'emp-1',
-//       name: 'ООО Рога и Копыта',
-//       logo_urls: {
-//         '90': 'https://example.com/logo-90.png',
-//       },
-//     },
-//     snippet: {
-//       requirement: null,
-//       responsibility: null,
-//     },
-//     alternate_url: 'https://example.com/vacancy/1/alt',
-//     description: 'Описание вакансии',
-//   }
+// Мок-данные вакансии
+const mockVacancy: VacancyType = {
+  id: '12345',
+  name: 'Frontend разработчик',
+  salary: {
+    from: 150000,
+    to: 250000,
+    currency: 'RUR',
+  },
+  experience: {
+    id: 'between1And3',
+    name: 'От 1 года до 3 лет',
+  },
+  employer: {
+    id: 'employer1',
+    name: 'ООО "Технологии"',
+  },
+  schedule: {
+    id: 'fullDay',
+    name: 'Полный день',
+  },
+  area: {
+    id: 'area1',
+    name: 'Москва',
+  },
+} as VacancyType
 
-//   it('рендерит основные данные вакансии и кнопки действий', () => {
-//     renderWithProviders(<Vacancy vacancy={baseVacancy} />)
+describe('Vacancy', () => {
+  describe('базовый рендер', () => {
+    // Проверяет, что название вакансии отображается
+    it('отображает название вакансии', () => {
+      renderVacancy(mockVacancy)
 
-//     expect(
-//       screen.getByRole('heading', {
-//         level: 3,
-//         name: /Frontend разработчик/i,
-//       })
-//     ).toBeInTheDocument()
+      expect(screen.getByRole('heading', { name: 'Frontend разработчик' })).toBeInTheDocument()
+    })
 
-//     expect(screen.getByText('Опыт от 3 лет')).toBeInTheDocument()
-//     expect(screen.getByText('ООО Рога и Копыта')).toBeInTheDocument()
-//     expect(screen.getByText('Санкт-Петербург')).toBeInTheDocument()
+    // Проверяет, что диапазон зарплаты отображается
+    it('отображает диапазон зарплаты', () => {
+      renderVacancy(mockVacancy)
 
-//     expect(screen.getByRole('button', { name: 'Смотреть вакансию' })).toBeInTheDocument()
-//     expect(screen.getByRole('button', { name: 'Откликнуться' })).toBeInTheDocument()
-//   })
+      expect(screen.getByText('150000 - 250000 ₽')).toBeInTheDocument()
+    })
 
-//   it('отображает только "От {from}" когда указана только нижняя граница зарплаты', () => {
-//     const vacancy: VacancyType = {
-//       ...baseVacancy,
-//       salary: {
-//         from: 100000,
-//         to: null,
-//         currency: 'RUR',
-//         gross: false,
-//       },
-//     }
+    // Проверяет, что требуемый опыт отображается
+    it('отображает требуемый опыт работы', () => {
+      renderVacancy(mockVacancy)
 
-//     renderWithProviders(<Vacancy vacancy={vacancy} />)
+      expect(screen.getByText('От 1 года до 3 лет')).toBeInTheDocument()
+    })
 
-//     expect(screen.getByText(/От 100000/)).toBeInTheDocument()
-//     expect(screen.queryByText(/До 100000/)).not.toBeInTheDocument()
-//   })
+    // Проверяет, что название компании отображается
+    it('отображает название работодателя', () => {
+      renderVacancy(mockVacancy)
 
-//   it('отображает только "До {to}" когда указана только верхняя граница зарплаты', () => {
-//     const vacancy: VacancyType = {
-//       ...baseVacancy,
-//       salary: {
-//         from: null,
-//         to: 200000,
-//         currency: 'RUR',
-//         gross: false,
-//       },
-//     }
+      expect(screen.getByText('ООО "Технологии"')).toBeInTheDocument()
+    })
 
-//     renderWithProviders(<Vacancy vacancy={vacancy} />)
+    // Проверяет, что график работы отображается
+    it('отображает график работы с бейджем', () => {
+      renderVacancy(mockVacancy)
 
-//     expect(screen.getByText(/До 200000/)).toBeInTheDocument()
-//     expect(screen.queryByText(/От 200000/)).not.toBeInTheDocument()
-//   })
+      expect(screen.getByText('Полный день')).toBeInTheDocument()
+    })
 
-//   it('отображает диапазон зарплаты, когда указаны обе границы', () => {
-//     const vacancy: VacancyType = {
-//       ...baseVacancy,
-//       salary: {
-//         from: 100000,
-//         to: 200000,
-//         currency: 'RUR',
-//         gross: false,
-//       },
-//     }
+    // Проверяет, что город отображается
+    it('отображает город вакансии', () => {
+      renderVacancy(mockVacancy)
 
-//     renderWithProviders(<Vacancy vacancy={vacancy} />)
+      expect(screen.getByText('Москва')).toBeInTheDocument()
+    })
 
-//     expect(screen.getByText(/100000 - 200000/)).toBeInTheDocument()
-//   })
+    // Проверяет, что обе кнопки отображаются
+    it('отображает кнопки "Смотреть вакансию" и "Откликнуться"', () => {
+      renderVacancy(mockVacancy)
 
-//   it('отображает корректный бейдж для разных графиков работы', () => {
-//     const fullDayVacancy: VacancyType = {
-//       ...baseVacancy,
-//       schedule: { id: 'full-day', name: 'Полный день' },
-//     }
+      expect(screen.getByRole('link', { name: /смотреть вакансию/i })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'Откликнуться' })).toBeInTheDocument()
+    })
+  })
 
-//     const remoteVacancy: VacancyType = {
-//       ...baseVacancy,
-//       schedule: { id: 'remote', name: 'Удаленная работа' },
-//     }
+  describe('отображение зарплаты', () => {
+    // Проверяет отображение "От X ₽"
+    it('отображает "От X ₽" если указан только минимум', () => {
+      const vacancyWithMinSalary: VacancyType = {
+        ...mockVacancy,
+        salary: { from: 100000, to: null, currency: 'RUR' },
+      } as VacancyType
 
-//     const flexibleVacancy: VacancyType = {
-//       ...baseVacancy,
-//       schedule: { id: 'flex', name: 'Гибкий график' },
-//     }
+      renderVacancy(vacancyWithMinSalary)
 
-//     renderWithProviders(
-//       <>
-//         <Vacancy vacancy={fullDayVacancy} />
-//         <Vacancy vacancy={remoteVacancy} />
-//         <Vacancy vacancy={flexibleVacancy} />
-//       </>
-//     )
+      expect(screen.getByText('От 100000 ₽')).toBeInTheDocument()
+    })
 
-//     expect(screen.getByText('Полный день')).toBeInTheDocument()
-//     expect(screen.getByText('Удаленная работа')).toBeInTheDocument()
-//     expect(screen.getByText('Гибкий график')).toBeInTheDocument()
-//   })
-// })
+    // Проверяет отображение "До X ₽"
+    it('отображает "До X ₽" если указан только максимум', () => {
+      const vacancyWithMaxSalary: VacancyType = {
+        ...mockVacancy,
+        salary: { from: null, to: 200000, currency: 'RUR' },
+      } as VacancyType
 
-// /*
-// Что проверяем:
-// - Рендерятся основные данные вакансии (название, опыт, работодатель, город) и обе кнопки действий.
-// - Логика условного отображения зарплаты: только "От", только "До" и диапазон при обеих границах.
-// - Для разных значений schedule рендерятся корректные бейджи с текстами "Полный день", "Удаленная работа" и "Гибкий график".
-// */
+      renderVacancy(vacancyWithMaxSalary)
+
+      expect(screen.getByText('До 200000 ₽')).toBeInTheDocument()
+    })
+
+    // Проверяет отсутствие зарплаты, если salary = null
+    it('не отображает зарплату если salary отсутствует', () => {
+      const vacancyWithoutSalary: VacancyType = {
+        ...mockVacancy,
+        salary: null,
+      } as VacancyType
+
+      renderVacancy(vacancyWithoutSalary)
+
+      expect(screen.queryByText(/₽/)).not.toBeInTheDocument()
+    })
+  })
+
+  describe('бейджи графика работы', () => {
+    // Проверяет красный бейдж для "Полный день"
+    it('отображает красный бейдж для "Полный день"', () => {
+      renderVacancy(mockVacancy)
+
+      const badge = screen.getByText('Полный день')
+      expect(badge).toBeInTheDocument()
+      // Mantine Badge с color='red' имеет data-атрибут
+      expect(badge.closest('[class*="mantine-Badge"]')).toBeInTheDocument()
+    })
+
+    // Проверяет зелёный бейдж для "Удаленная работа"
+    it('отображает зелёный бейдж для "Удаленная работа"', () => {
+      const remoteVacancy: VacancyType = {
+        ...mockVacancy,
+        schedule: { id: 'remote', name: 'Удаленная работа' },
+      } as VacancyType
+
+      renderVacancy(remoteVacancy)
+
+      expect(screen.getByText('Удаленная работа')).toBeInTheDocument()
+    })
+
+    // Проверяет дефолтный бейдж для "Гибкий график"
+    it('отображает бейдж для "Гибкий график"', () => {
+      const flexibleVacancy: VacancyType = {
+        ...mockVacancy,
+        schedule: { id: 'flexible', name: 'Гибкий график' },
+      } as VacancyType
+
+      renderVacancy(flexibleVacancy)
+
+      expect(screen.getByText('Гибкий график')).toBeInTheDocument()
+    })
+
+    // Проверяет отсутствие бейджа для других графиков
+    it('не отображает бейдж для других графиков работы', () => {
+      const otherScheduleVacancy: VacancyType = {
+        ...mockVacancy,
+        schedule: { id: 'shift', name: 'Сменный график' },
+      } as VacancyType
+
+      renderVacancy(otherScheduleVacancy)
+
+      expect(screen.queryByText('Сменный график')).not.toBeInTheDocument()
+    })
+  })
+
+  describe('ссылка на детальную страницу', () => {
+    // Проверяет, что ссылка ведёт на /vacancy/:id
+    it('ссылка "Смотреть вакансию" ведёт на /vacancy/:id', () => {
+      renderVacancy(mockVacancy)
+
+      const link = screen.getByRole('link', { name: /смотреть вакансию/i })
+      expect(link).toHaveAttribute('href', '/vacancy/12345')
+    })
+  })
+
+  describe('граничные случаи', () => {
+    // Проверяет работу с длинными названиями вакансий
+    it('корректно отображает длинное название вакансии', () => {
+      const longNameVacancy: VacancyType = {
+        ...mockVacancy,
+        name: 'Senior Frontend разработчик (React/TypeScript/Redux) с опытом работы более 5 лет',
+      }
+
+      renderVacancy(longNameVacancy)
+
+      expect(screen.getByRole('heading', { 
+        name: 'Senior Frontend разработчик (React/TypeScript/Redux) с опытом работы более 5 лет' 
+      })).toBeInTheDocument()
+    })
+
+    // Проверяет работу с длинными названиями компаний
+    it('корректно отображает длинное название работодателя', () => {
+      const longEmployerVacancy: VacancyType = {
+        ...mockVacancy,
+        employer: {
+          id: 'employer2',
+          name: 'Общество с ограниченной ответственностью "Международные технологии и инновации"',
+        },
+      } as VacancyType
+
+      renderVacancy(longEmployerVacancy)
+
+      expect(screen.getByText('Общество с ограниченной ответственностью "Международные технологии и инновации"')).toBeInTheDocument()
+    })
+
+    // Проверяет работу с минимальными данными
+    it('корректно отображает вакансию с минимальными данными', () => {
+      const minimalVacancy: VacancyType = {
+        id: '1',
+        name: 'Разработчик',
+        salary: null,
+        experience: { id: 'noExperience', name: 'Без опыта' },
+        employer: { id: 'emp1', name: 'Компания' },
+        schedule: { id: 'other', name: 'Другое' },
+        area: { id: 'area1', name: 'Санкт-Петербург' },
+      } as VacancyType
+
+      renderVacancy(minimalVacancy)
+
+      expect(screen.getByRole('heading', { name: 'Разработчик' })).toBeInTheDocument()
+      expect(screen.getByText('Без опыта')).toBeInTheDocument()
+      expect(screen.getByText('Компания')).toBeInTheDocument()
+      expect(screen.getByText('Санкт-Петербург')).toBeInTheDocument()
+    })
+  })
+})

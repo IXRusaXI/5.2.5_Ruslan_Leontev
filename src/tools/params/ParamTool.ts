@@ -34,8 +34,6 @@ export function useQueryParams() {
 
     function updateSkills(inputSkills?: string[]) {
         const paramSkills = searchParams.get('skills')
-        const searchString = searchParams.get('searchString')
-        const paramCity = searchParams.get('city')
 
         if (inputSkills != undefined) {
             dispatch(filterActions.setSkills(inputSkills))
@@ -50,12 +48,7 @@ export function useQueryParams() {
                 dispatch(filterActions.setSkills(mass))
             }
         } else if (stateSkills && stateSkills.length > 0) {
-            if (paramCity || searchString) {
-                dispatch(filterActions.setSkills([]))
-                updateParams('skills', [])
-            } else {
-                updateParams('skills', stateSkills)
-            }
+            updateParams('skills', stateSkills)
         }
     }
 

@@ -5,7 +5,7 @@ function CircleLoader() {
     return (
         <Container size="sm" mt="xl">
             <Center h="100%">
-                <Image w='20%' h='20%' src={loaderIcon}/>
+                <Image w='20%' h='20%' src={loaderIcon} alt="загрузка"/>
             </Center>
         </Container>
     )

@@ -1,6 +1,6 @@
 import { Flex, Text, Button } from '@mantine/core';
 
-export function Header() {
+export function Logo() {
   return (
     <Flex h="100%" align="center" pr={280}> {/* pr ~ ширина центра, чтобы не перекрывать */}
         <Flex align="center" gap="sm">
@@ -13,4 +13,4 @@ export function Header() {
   );
 }
 
-export default Header
+export default Logo
